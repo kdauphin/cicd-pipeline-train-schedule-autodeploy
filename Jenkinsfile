@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         //be sure to replace "willbla" with your own Docker Hub username
-        DOCKER_IMAGE_NAME = "willbla/train-schedule"
+        DOCKER_IMAGE_NAME = "myplaydocker/train-schedule"
         CANARY_REPLICAS = 0       
     }
     stages {
@@ -60,10 +60,10 @@ pipeline {
             }
             steps {
                 script {
-                    def response = httpRequest {
+                    def response = httpRequest (
                         url: "http://$KUBE_MASTER_IP:8081/",
                         timeout: 30
-                    }
+                    )
                     if (response.status != 200) {
                         error("Smoke Test against canary deployment failed.")
                     }
